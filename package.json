@@ -1,0 +1,53 @@
+{
+  "name": "trevors-extension",
+  "displayName": "TrevorsExtension",
+  "description": "Snippets by Trevor",
+  "publisher": "trevorreynen",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/trevorreynen/Trevors-VS-Code-Extension.git"
+  },
+  "version": "0.0.1",
+  "engines": {
+    "vscode": "^1.98.0"
+  },
+  "main": "./extension.js",
+  "activationEvents": [],
+  "categories": ["Snippets"],
+  "contributes": {
+    "snippets": [
+      { "language": "javascript", "path": "./snippets/snippets.code-snippets" },
+      { "language": "typescript", "path": "./snippets/snippets.code-snippets" },
+      { "language": "javascriptreact", "path": "./snippets/snippets.code-snippets" },
+      { "language": "typescriptreact", "path": "./snippets/snippets.code-snippets" },
+      { "language": "html", "path": "./snippets/snippets.code-snippets" },
+      { "language": "css", "path": "./snippets/snippets.code-snippets" },
+      { "language": "scss", "path": "./snippets/snippets.code-snippets" },
+      { "language": "json", "path": "./snippets/snippets.code-snippets" },
+      { "language": "plaintext", "path": "./snippets/snippets.code-snippets" },
+      { "language": "python", "path": "./snippets/snippets.code-snippets" },
+      { "language": "java", "path": "./snippets/snippets.code-snippets" },
+      { "language": "cpp", "path": "./snippets/snippets.code-snippets" },
+      { "language": "sql", "path": "./snippets/snippets.code-snippets" },
+      { "language": "markdown", "path": "./snippets/snippets.code-snippets" },
+      { "language": "yaml", "path": "./snippets/snippets.code-snippets" }
+    ],
+    "commands": [
+      { "command": "TrevorsExtension.sortCssProps.all", "title": "Sort All CSS/SCSS Blocks" },
+      { "command": "TrevorsExtension.sortCssProps.selection", "title": "Sort Selected CSS/SCSS Properties" },
+      { "command": "TrevorsExtension.sortCssProps.ultra", "title": "Sort All CSS/SCSS Blocks (Ultra Mode)" }
+    ],
+    "keybindings": [
+      { "command": "TrevorsExtension.sortCssProps.all", "key": "Ctrl+O", "when": "editorTextFocus && !editorHasSelection" },
+      { "command": "TrevorsExtension.sortCssProps.selection", "key": "Ctrl+Alt+O", "when": "editorTextFocus && editorHasSelection" },
+      { "command": "TrevorsExtension.sortCssProps.ultra", "key": "Ctrl+Shift+O", "when": "editorTextFocus && !editorHasSelection" }
+    ]
+  },
+  "dependencies": {
+    "postcss": "^8.5.3",
+    "postcss-scss": "^4.0.9"
+  },
+  "devDependencies": {
+    "esbuild": "^0.25.2"
+  }
+}

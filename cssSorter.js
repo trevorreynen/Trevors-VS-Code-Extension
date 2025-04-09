@@ -256,16 +256,69 @@ function sortProperties(nodes) {
 }
 
 
-async function sortCssText(cssText) {
+function walkAndSort(rule, log) {
+  log?.appendLine(`🧾 Rule: ${rule.selector}`)
+
+  if (!rule.nodes || rule.nodes.length === 0) {
+    log?.appendLine(`⚠️ Skipping rule (empty or invalid): ${rule.selector}`)
+    return
+  }
+
+  const sorted = sortProperties(rule.nodes)
+
+  for (let node of sorted) {
+    log?.appendLine(`   node: ${node.type} ${node.prop || ''} ${node.value || ''}`)
+
+    if (node.type === 'rule') {
+      walkAndSort(node, log)
+    }
+  }
+
+  rule.nodes = sorted
+}
+
+
+async function sortCssText(cssText, log = console) {
   const cleanedText = preprocessScssComments(cssText)
   const root = postcss.parse(cleanedText, { syntax: scss })
 
   root.walkRules(rule => {
-    rule.nodes = sortProperties(rule.nodes || [])
+    walkAndSort(rule, log)
   })
 
   return root.toString()
 }
+
+
+function walkAndSortUltra(rule) {
+  if (!rule.nodes || rule.nodes.length === 0) return
+
+  const sorted = sortProperties(rule.nodes)
+
+  let lastDecl = null
+
+  for (let node of sorted) {
+    if (node.type === 'decl') {
+      lastDecl = node
+
+      node.raws.between = ': '
+      node.value = node.value.replace(/(^|[^\d])\.([0-9]+)(s|ms)\b/g, '$10.$2$3')
+      node.value = node.value.replace(/\b0\b(?=\s|;|$)(?!px|%|vh|vw|ch|s|ms|deg)/g, '0px')
+    }
+
+    if (node.type === 'rule') {
+      walkAndSortUltra(node)
+    }
+  }
+
+  if (lastDecl && !lastDecl.raws.semicolon) {
+    lastDecl.raws.semicolon = true
+    rule.raws.semicolon = true
+  }
+
+  rule.nodes = sorted
+}
+
 
 
 async function sortCssTextUltra(cssText) {
@@ -273,32 +326,7 @@ async function sortCssTextUltra(cssText) {
   const root = postcss.parse(cleanedText, { syntax: scss })
 
   root.walkRules(rule => {
-    const sorted = sortProperties(rule.nodes || [])
-
-    let lastDecl = null
-
-    for (let node of sorted) {
-      if (node.type === 'decl') {
-        lastDecl = node
-
-        // 1. Add space after colon
-        node.raws.between = ': '
-
-        // 2. Normalize durations like `.5s` → `0.5s`
-        node.value = node.value.replace(/(^|[^\d])\.([0-9]+)(s|ms)\b/g, '$10.$2$3')
-
-        // 3. Add px to standalone zero values
-        node.value = node.value.replace(/\b0\b(?=\s|;|$)(?!px|%|vh|vw|ch|s|ms|deg)/g, '0px')
-      }
-    }
-
-    // 4. Add semicolon to last decl and rule
-    if (lastDecl && !lastDecl.raws.semicolon) {
-      lastDecl.raws.semicolon = true
-      rule.raws.semicolon = true
-    }
-
-    rule.nodes = sorted
+    walkAndSortUltra(rule)
   })
 
   return root.toString()

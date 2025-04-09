@@ -16,7 +16,7 @@ function activate(context) {
     const text = document.getText()
 
     try {
-      const sorted = await sortCssText(text)
+      const sorted = await sortCssText(text, outputChannel)
 
       const fullRange = new vscode.Range(
         document.positionAt(0),
@@ -26,6 +26,8 @@ function activate(context) {
       await editor.edit(editBuilder => {
         editBuilder.replace(fullRange, sorted)
       })
+
+      //outputChannel.show(true)
 
       outputChannel.appendLine('🔧 Sorted ALL blocks.')
       vscode.window.showInformationMessage('✅ All CSS/SCSS blocks sorted.')

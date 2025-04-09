@@ -213,7 +213,8 @@ function sortProperties(nodes) {
   let currentGroup = []
 
   for (let i = 0; i < nodes.length; i++) {
-    const node = nodes[i]
+    const rawNode = nodes[i]
+    const node = { ...rawNode } // Shallow clone to avoid identity collisions
 
     if (node.type === 'comment') {
       currentGroup = [node]

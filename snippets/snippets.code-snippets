@@ -2,7 +2,7 @@
   "React Component G2G - 1": {
     "prefix": "trevTsxComp1",
     "body": [
-      "// import ${1:${TM_FILENAME_BASE}} from '@components/${1:${TM_FILENAME_BASE}}/${1:${TM_FILENAME_BASE}}'",
+      "// import ${1:${TM_FILENAME_BASE}} from '@/components/${1:${TM_FILENAME_BASE}}/${1:${TM_FILENAME_BASE}}'",
       "",
       "// =========================< IMPORTS: REACT >=================================",
       "import React, { useState, useEffect, createContext, useContext, ReactNode, useMemo } from 'react'",
@@ -43,7 +43,7 @@
   "React Component G2G - No Layout - 2": {
     "prefix": "trevTsxComp2",
     "body": [
-      "// import ${1:${TM_FILENAME_BASE}} from '@components/${1:${TM_FILENAME_BASE}}/${1:${TM_FILENAME_BASE}}'",
+      "// import ${1:${TM_FILENAME_BASE}} from '@/components/${1:${TM_FILENAME_BASE}}/${1:${TM_FILENAME_BASE}}'",
       "",
       "// =========================< IMPORTS: REACT >=================================",
       "import React, { useState, useEffect, createContext, useContext, ReactNode, useMemo } from 'react'",
